@@ -1,6 +1,6 @@
 # Original code by:
 #   Christian Peccei: Mapping Your Music Collection
-#   http://www.christianpeccei.com/musiccube/
+#   http://www.christianpeccei.com/musicmap/
 
 import numpy as np
 import os
