@@ -1,0 +1,55 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Bertrand Lorentz <bertrand.lorentz@gmail.com>, 2011.
+# Christoph Bauer <transifex@stargazer.at>, 2011.
+# fixx <funtastix@googlemail.com>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: Banshee Community Extensions\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=banshee&component=Community%20Extensions\n"
+"POT-Creation-Date: 2012-04-01 20:05+0200\n"
+"PO-Revision-Date: 2012-04-02 08:25+0000\n"
+"Last-Translator: Christoph Bauer <transifex@stargazer.at>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: ../src/MusicCube/Banshee.MusicCube/Banshee.MusicCube.addin.xml:7
+#: ../src/MusicCube/Banshee.MusicCube/addin-xml-strings.cs:10
+msgid "Community Extensions"
+msgstr "Gemeinschaftserweiterungen"
+
+#: src/MusicCube/Banshee.MusicCube/MusicCubeActions.cs:48
+msgid "Play by MusicCube"
+msgstr "Wiedergabe mit MusicCube"
+
+#: src/MusicCube/Banshee.MusicCube/MusicCubeActions.cs:49
+msgid "Play similar songs"
+msgstr "Ähnliche Lieder wiedergeben"
+
+#: src/MusicCube/Banshee.MusicCube/RandomByProximity.cs:39
+msgid "Shuffle by Proximity"
+msgstr "Zufallswiedergabe nach Nachbarschaft"
+
+#: src/MusicCube/Banshee.MusicCube/RandomByProximity.cs:40
+msgid "by proximity"
+msgstr "nach Nachbarschaft"
+
+#: src/MusicCube/Banshee.MusicCube/RandomByProximity.cs:41
+msgid "Play all songs close to selected song"
+msgstr "Wiedergabe nahe Auswahl"
+
+#: src/MusicCube/Banshee.MusicCube/addin-xml-strings.cs:8
+msgid "MusicCube"
+msgstr "MusicCube"
+
+#: src/MusicCube/Banshee.MusicCube/addin-xml-strings.cs:9
+msgid "Adds the selected song to the play queue and shuffles by proximity"
+msgstr "Auswahl in Warteschlange einfügen und Zufallswiedergabe nach Nachbarschaft"
+

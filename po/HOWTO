@@ -1,0 +1,12 @@
+1) Extract translations of xml
+
+   cd banshee-community-extensions
+   ../banshee/build/addin-xml-string-extractor.exe src/MusicCube/Banshee.MusicCube.addin.xml > src/MusicCube/Banshee.MusicCube/addin-xml-strings.cs
+
+2) Join existing translations
+
+   xgettext -j -o po/de.po src/MusicCube/Banshee.MusicCube/*
+
+3) Translate
+
+   poedit po/de.po

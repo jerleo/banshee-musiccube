@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Addin 
+    id="Banshee.MusicCube"
+    version="1.0"
+    compatVersion="1.0"
+    copyright="Copyright © 2015 Jeremiah Leonard. Licensed under the MIT X11 license."
+    name="MusicCube"
+    category="Community Extensions"
+    description="Adds the selected song to the play queue and shuffles by proximity "
+    author="Jeremiah Leonard"
+    url="http://banshee-project.org/"
+    defaultEnabled="false">
+
+  <Localizer type="Gettext" catalog="banshee-community-extensions" location="../../../share/locale"/>
+
+  <Dependencies>
+    <Addin id="Banshee.Services" version="1.0"/>
+    <Addin id="Banshee.ThickClient" version="1.0"/>
+  </Dependencies>
+  
+  <Extension path="/Banshee/ServiceManager/Service">
+    <Service class="Banshee.MusicCube.MusicCubeService"/>
+  </Extension>-->
+
+  <Extension path="/Banshee/PlaybackController/ShuffleModes">
+    <ShuffleMode class="Banshee.MusicCube.RandomByProximity"/>
+  </Extension>
+
+</Addin>

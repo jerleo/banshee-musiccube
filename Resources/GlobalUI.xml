@@ -1,0 +1,7 @@
+<ui>
+    <popup name="TrackContextMenu" action="TrackContextMenuAction">
+        <placeholder name="AboveAddToPlaylist">
+            <menuitem name="PlayByMusicCube" action="PlayByMusicCubeAction"></menuitem>
+        </placeholder>
+    </popup>
+</ui>
