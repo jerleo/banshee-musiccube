@@ -38,6 +38,9 @@ class MusicCube:
     DB_PATH = ".musiccube"
     DB_NAME = "musiccube.dbm"
 
+    # normalize data
+    SCALE = False
+
     def __init__(self):
 
         # get music path from Banshee
@@ -55,7 +58,9 @@ class MusicCube:
         # get and update music data
         self.music_shelve = shelve.open(db_file, writeback=True)
         self.update_music_data()
-        self.scale_music_data()
+
+        if self.SCALE:
+            self.scale_music_data()
         
         # create or load music cube        
         self.numba_cube = NumbaCube(
@@ -76,7 +81,12 @@ class MusicCube:
 
         # calculate scaled song features
         song_data = np.array(self.music_shelve[song])
-        return self.scale_by_column(song_data)
+
+        # normalize by column
+        if self.SCALE:
+            song_data = self.scale_by_column(song_data)
+
+        return song_data
 
     def get_position(self, song):
 
@@ -105,12 +115,16 @@ class MusicCube:
                 if analyzer.valid_features(features):
                     self.music_shelve[mp3] = features
                     self.music_shelve.sync()
+                    print "Analyzed " + mp3
                     
             processed += 1
-            if processed % 50 == 0 or processed == len(music_list):
+            if processed % 50 == 0:
                 progress = float(processed) / float(song_count)
                 print "{:8.2f} %".format(progress * 100)
-            
+
+        # convert music data to array
+        self.music_data = np.array(self.music_shelve.values())
+
     def update_banshee(self):
 
         # update song positions in Banshee
@@ -123,11 +137,10 @@ class MusicCube:
     def scale_music_data(self):
 
         # scale music data column wise
-        array_data = np.array(self.music_shelve.values())
-        mins = np.min(array_data, axis=0)
-        self.maxs = np.max(array_data, axis=0)
+        mins = np.min(self.music_data, axis=0)
+        self.maxs = np.max(self.music_data, axis=0)
         self.rng = self.maxs - mins
-        self.music_data = self.scale_by_column(array_data)
+        self.music_data = self.scale_by_column(self.music_data)
 
     def scale_by_column(self, data, high=1.0, low=0.0):
 
@@ -148,3 +161,4 @@ if __name__ == '__main__':
 
     print "Updating Banshee ..."
     music_cube.update_banshee()
+

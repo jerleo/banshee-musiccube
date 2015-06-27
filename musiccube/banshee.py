@@ -100,8 +100,7 @@ class Banshee:
         with self.Connection(self.db_path) as db:
 
             banshee_songs = self.get_tracks()
-            song_count = len(banshee_songs)
-            
+
             for song in banshee_songs:
                 if song in song_positions:
                     track_id = banshee_songs[song]
