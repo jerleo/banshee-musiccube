@@ -39,7 +39,7 @@ class MusicCube:
     DB_NAME = "musiccube.dbm"
 
     # normalize data
-    SCALE = False
+    SCALE = True
 
     def __init__(self):
 

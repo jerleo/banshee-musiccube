@@ -63,26 +63,33 @@ namespace Banshee.MusicCube
                                 + ABS(MusicCube.Axis2 - {1}) 
                                 + ABS(MusicCube.Axis3 - {2}) AS Distance";
 
+            // Don't repeat albums
+            string album = @"SELECT DISTINCT AlbumID
+                               FROM CorePlayListEntries
+                               JOIN CoreTracks
+                                 ON CoreTracks.TrackID = CorePlayListEntries.TrackID
+                              WHERE CorePlayListEntries.PlayListID = {0}";
+
             // Don't repeat artists
-            string artist = @"SELECT DISTINCT ArtistId
+            string artist = @"SELECT DISTINCT ArtistID
                                 FROM CorePlayListEntries
                                 JOIN CoreTracks
-                                  ON CoreTracks.TrackId = CorePlayListEntries.TrackId
+                                  ON CoreTracks.TrackID = CorePlayListEntries.TrackID
                                WHERE CorePlayListEntries.PlayListID = {0}";
 
             // Set query fragments
             Select = String.Format (distance, seed.X, seed.Y, seed.Z);
-            From = ", MusicCube";        
-            Condition = String.Format (@"MusicCube.TrackId = CoreTracks.TrackId
-                                       AND CoreTracks.ArtistId NOT IN (" + artist + ")",
-                                       queue.DbId);
+            From = ", MusicCube";
+            Condition = "MusicCube.TrackID = CoreTracks.TrackID";
+            Condition += String.Format (" AND CoreTracks.ArtistID NOT IN (" + artist + ")", queue.DbId);
+            Condition += String.Format (" AND CoreTracks.AlbumID NOT IN (" + album + ")", queue.DbId);
             OrderBy = "Distance";
         }
-        /*
- 
-        Signature changed to protected virtual in
-        Core/Banshee.Services/Banshee.Collection.Database/RandomBy.cs
 
+        /*
+           Signature changed to protected virtual in
+           Core/Banshee.Services/Banshee.Collection.Database/RandomBy.cs
+        */
         protected override DatabaseTrackInfo GetTrack (HyenaSqliteCommand cmd, params object[] args)
         {    
             DatabaseTrackInfo track = base.GetTrack (cmd, args);
@@ -91,6 +98,5 @@ namespace Banshee.MusicCube
             Coordinates.Of (track);
             return track;
         }
-        */
     }
 }
