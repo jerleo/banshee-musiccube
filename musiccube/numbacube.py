@@ -6,6 +6,7 @@ import numpy as np
 import os
 
 from numba import jit
+from progress import Progress
 
 class NumbaCube:
 
@@ -85,6 +86,9 @@ class NumbaCube:
         shuffled = range(samples)
         np.random.shuffle(shuffled)
 
+        # Create progress object
+        progress = Progress("Training MusicCube", samples)
+
         for ix in range(samples):
 
             # Pick a random vector
@@ -105,9 +109,9 @@ class NumbaCube:
                            self.nodes, self.dims,
                            self.rate, self.spread,
                            self.weights, self.indices)
-            
-            if ix % 20 == 0:
-                print "{:8.2f} %".format(self.progress * 100)
+
+            # Display progress
+            progress.display()
 
 @jit(nopython=True)
 def get_winner(sample, nodes, dims, weights, distances):
@@ -136,4 +140,3 @@ def update_weights(sample, winner, nodes, dims, rate, spread, weights, indices):
 
         for d in range(dims):
             weights[n, d] += dampening * (sample[d] - weights[n, d])
-

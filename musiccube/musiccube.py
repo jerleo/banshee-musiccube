@@ -1,7 +1,7 @@
 #
 # musiccube.py
 #
-# Copyright (C) 2015 Jeremiah Leonard
+# Copyright (C) 2015 Jeremiah J. Leonard
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -28,18 +28,17 @@ import shelve
 from analyzer import Analyzer
 from banshee import Banshee
 from numbacube import NumbaCube
+from progress import Progress
+
+from matplotlib import pyplot
+from mpl_toolkits.mplot3d import Axes3D
+from pylab import figure
 
 class MusicCube:
-
-    # number of neurons per edge of cube
-    SOM_SIZE = 42
 
     # path and file name of music database
     DB_PATH = ".musiccube"
     DB_NAME = "musiccube.dbm"
-
-    # normalize data
-    SCALE = True
 
     def __init__(self):
 
@@ -59,15 +58,23 @@ class MusicCube:
         self.music_shelve = shelve.open(db_file, writeback=True)
         self.update_music_data()
 
-        if self.SCALE:
-            self.scale_music_data()
-        
+        # transform columns to be between 0 and 1
+        self.scale_music_data()
+
+        # calculate number of nodes per edge
+        cube_edge = int(len(self.music_data) ** (1 / 3.0))
+
         # create or load music cube        
         self.numba_cube = NumbaCube(
-            edge_length=self.SOM_SIZE,
+            edge_length=cube_edge,
             node_weights=Analyzer.FEATURES_LENGTH,
             npy_path=db_path,
             random_seed=1)
+
+        # empty coordinate arrays
+        self.xs = []
+        self.ys = []
+        self.zs = []
 
     def __del__(self):
 
@@ -83,8 +90,7 @@ class MusicCube:
         song_data = np.array(self.music_shelve[song])
 
         # normalize by column
-        if self.SCALE:
-            song_data = self.scale_by_column(song_data)
+        song_data = self.scale_by_column(song_data)
 
         return song_data
 
@@ -98,15 +104,15 @@ class MusicCube:
 
         analyzer = Analyzer()
         music_list = self.banshee.get_tracks()
-        song_count = len(music_list)
-        processed = 0
-        
+
         # delete previously analyzed songs no longer existing in Banshee
         for mp3 in self.music_shelve:
             if mp3 not in music_list:
                 del self.music_shelve[mp3]
                 self.music_shelve.sync()
-                print "Dropped " + mp3
+
+        song_count = len(music_list)
+        progress = Progress("Analyzing Songs", song_count)
 
         # calculate and save features of new songs
         for mp3 in music_list:
@@ -115,12 +121,8 @@ class MusicCube:
                 if analyzer.valid_features(features):
                     self.music_shelve[mp3] = features
                     self.music_shelve.sync()
-                    print "Analyzed " + mp3
-                    
-            processed += 1
-            if processed % 50 == 0:
-                progress = float(processed) / float(song_count)
-                print "{:8.2f} %".format(progress * 100)
+
+            progress.display()
 
         # convert music data to array
         self.music_data = np.array(self.music_shelve.values())
@@ -130,8 +132,19 @@ class MusicCube:
         # update song positions in Banshee
         positions = {}
         paths = self.get_paths()
+        song_count = len(paths)
+        progress = Progress("Updating Banshee", song_count)
+
         for song in paths:
             positions[song] = self.get_position(song)
+
+            # save positions for plotting
+            self.xs.append(positions[song][0])
+            self.ys.append(positions[song][1])
+            self.zs.append(positions[song][2])
+
+            progress.display()
+
         self.banshee.update_tracks(positions)
 
     def scale_music_data(self):
@@ -151,14 +164,18 @@ class MusicCube:
         self.numba_cube.train(self.music_data)
         self.numba_cube.save()
 
+    def plot(self):
+
+        # create and show scatter plot
+        ax = Axes3D(figure())
+        ax.scatter(self.xs, self.ys, self.zs, s=40)
+        ax.set_title("MusicCube")
+        pyplot.show()
+
 if __name__ == '__main__':
 
-    print "Analyzing Songs ..."
     music_cube = MusicCube()
-    
-    print "Training MusicCube ..."
     music_cube.train_numbacube()
-
-    print "Updating Banshee ..."
     music_cube.update_banshee()
-
+    music_cube.plot()
+    print "Done."
