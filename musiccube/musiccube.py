@@ -30,7 +30,7 @@ from banshee import Banshee
 from numbacube import NumbaCube
 from progress import Progress
 
-from matplotlib import pyplot
+from matplotlib import pyplot, colors
 from mpl_toolkits.mplot3d import Axes3D
 from pylab import figure
 
@@ -62,7 +62,7 @@ class MusicCube:
         self.scale_music_data()
 
         # calculate number of nodes per edge
-        cube_edge = int(len(self.music_data) ** (1 / 3.0))
+        cube_edge = int(len(self.music_data) ** (1 / 3.0) / 2)
 
         # create or load music cube        
         self.numba_cube = NumbaCube(
@@ -70,11 +70,6 @@ class MusicCube:
             node_weights=Analyzer.FEATURES_LENGTH,
             npy_path=db_path,
             random_seed=1)
-
-        # empty coordinate arrays
-        self.xs = []
-        self.ys = []
-        self.zs = []
 
     def __del__(self):
 
@@ -129,22 +124,25 @@ class MusicCube:
 
     def update_banshee(self):
 
-        # update song positions in Banshee
+        self.counter = {}
         positions = {}
         paths = self.get_paths()
         song_count = len(paths)
         progress = Progress("Updating Banshee", song_count)
 
         for song in paths:
-            positions[song] = self.get_position(song)
+            position = self.get_position(song)
+            positions[song] = position
 
-            # save positions for plotting
-            self.xs.append(positions[song][0])
-            self.ys.append(positions[song][1])
-            self.zs.append(positions[song][2])
+            # count song positions for plotting
+            if position not in self.counter:
+                self.counter[position] = 1
+            else:
+                self.counter[position] += 1
 
             progress.display()
 
+        # update song positions in Banshee
         self.banshee.update_tracks(positions)
 
     def scale_music_data(self):
@@ -168,7 +166,50 @@ class MusicCube:
 
         # create and show scatter plot
         ax = Axes3D(figure())
-        ax.scatter(self.xs, self.ys, self.zs, s=40)
+
+        # transform to array
+        data = np.array([(key[0], key[1], key[2], val)
+                         for key, val in self.counter.items()])
+
+        # sort by position counter
+        data = data[np.argsort(data[:, 3])]
+
+        # minimum and maximum counter
+        min = np.min(data[:, 3])
+        max = np.max(data[:, 3])
+
+        # setup color mapping
+        colormap = pyplot.cm.ScalarMappable(
+            norm=colors.Normalize(vmin=min, vmax=max),
+            cmap=pyplot.cm.get_cmap('RdYlBu_r'))
+
+        # initialize group
+        group = 0
+
+        for ix in range(len(data)):
+
+            # determine current group
+            count = data[ix][3]
+
+            # group header
+            if not count == group:
+                xs = []
+                ys = []
+                zs = []
+
+            # group body
+            xs.append(data[ix][0])
+            ys.append(data[ix][1])
+            zs.append(data[ix][2])
+            group = count
+
+            # group footer
+            # last item or last item of group
+            if (ix == len(data) - 1) or not (data[ix + 1][3] == group):
+                color = colormap.to_rgba(group)
+                size = group * 10
+                ax.scatter(xs, ys, zs, c=color, s=size)
+
         ax.set_title("MusicCube")
         pyplot.show()
 

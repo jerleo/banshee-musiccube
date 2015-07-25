@@ -81,7 +81,7 @@ class NumbaCube:
             spread_upper = self.edge_length / 3.0
         else:
             # Small spread for trained weights
-            spread_upper = spread_lower * 1.5
+            spread_upper = spread_lower * 1.1
 
         shuffled = range(samples)
         np.random.shuffle(shuffled)

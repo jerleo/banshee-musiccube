@@ -31,12 +31,11 @@ class Progress:
 
     def __init__(self, title, total):
 
-        self.title = title
         self.total = total
         self.count = 0
         self.last = 0
         self.width = float(total) / float(self.STEPS)
-        stdout.write(self.title.ljust(self.TITLE))
+        stdout.write(title.ljust(self.TITLE))
 
     def display(self):
 
