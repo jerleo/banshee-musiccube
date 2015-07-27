@@ -62,7 +62,7 @@ class MusicCube:
         self.scale_music_data()
 
         # calculate number of nodes per edge
-        cube_edge = int(len(self.music_data) ** (1 / 3.0) / 2)
+        cube_edge = int(len(self.music_data) ** (1 / 3.0))
 
         # create or load music cube        
         self.numba_cube = NumbaCube(
