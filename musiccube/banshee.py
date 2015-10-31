@@ -67,7 +67,7 @@ class Banshee:
 
             db.execute("""SELECT Uri, TrackId 
                             FROM CoreTracks
-                           WHERE Uri LIKE '%.mp3' 
+                           WHERE Uri LIKE 'file://%.mp3' 
                            ORDER BY Uri""")
             rows = db.fetchall()
 

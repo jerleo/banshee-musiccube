@@ -183,10 +183,11 @@ class MusicCube:
             norm=colors.Normalize(vmin=min, vmax=max),
             cmap=pyplot.cm.get_cmap('RdYlBu_r'))
 
-        # initialize group
+        # initialize loop
         group = 0
+        loops = len(data)
 
-        for ix in range(len(data)):
+        for ix in range(loops):
 
             # determine current group
             count = data[ix][3]
@@ -205,9 +206,9 @@ class MusicCube:
 
             # group footer
             # last item or last item of group
-            if (ix == len(data) - 1) or not (data[ix + 1][3] == group):
+            if (ix == loops - 1) or not (data[ix + 1][3] == group):
                 color = colormap.to_rgba(group)
-                size = group * 10
+                size = 10 + group * 10
                 ax.scatter(xs, ys, zs, c=color, s=size)
 
         ax.set_title("MusicCube")
