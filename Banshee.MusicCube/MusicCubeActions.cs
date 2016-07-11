@@ -47,29 +47,8 @@ namespace Banshee.MusicCube
             AddUiFromFile ("GlobalUI.xml");
             Register ();
         }
-        /*
-        Required changes to switch shuffle mode programmatically:
 
-        1) Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs
-
-           public bool SetMode (Shuffler shuffler, String modeId) {
-               foreach (var random_by in shuffler.RandomModes.OrderBy (r => r.Adverb)) {                
-                   if (random_by.Id == modeId) {
-                       mode_combo.ActiveValue = random_by;
-                       return true;
-                   }
-               }
-               return false;
-           }
-
-        2) Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs
-
-           public bool ChangeShuffleMode (String modeId)
-           {
-               return header_widget.SetMode (shuffler, modeId);
-           }
-        */
-        private void OnPlayByMusicCube (object o, EventArgs args)
+		private void OnPlayByMusicCube (object o, EventArgs args)
         {        
             // Try to get the play queue
             PlayQueueSource queue = MusicCubeService.PlayQueue;

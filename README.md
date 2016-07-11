@@ -7,4 +7,4 @@ MusicCube is an extension for the Banshee Media Player allowing you to play stat
 
 This creates a table called MusicCube in your Banshee database which stores the coordinates of each song in the MusicCube. The extension adds to the context menu the command "Play by MusicCube". Select it to clear the play queue and fill it with statistically similar songs.
 
-As I did not know how to programmatically switch the playback mode of the play queue other than modifying the play queue extension code, you will need the full source code of Banshee to make the extension work. Required changes are documented in MusicCubeActions.cs.
+As I did not know how to programmatically switch the playback mode of the play queue other than modifying the play queue extension code, you will need the full source code of Banshee to make the extension work. Required steps are documented in setup.sh.

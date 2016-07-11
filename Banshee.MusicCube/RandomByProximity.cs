@@ -86,10 +86,6 @@ namespace Banshee.MusicCube
             OrderBy = "Distance";
         }
 
-        /*
-           Signature changed to protected virtual in
-           Core/Banshee.Services/Banshee.Collection.Database/RandomBy.cs
-        */
         protected override DatabaseTrackInfo GetTrack (HyenaSqliteCommand cmd, params object[] args)
         {    
             DatabaseTrackInfo track = base.GetTrack (cmd, args);

@@ -1,0 +1,109 @@
+--- banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/RandomBy.cs	2014-02-18 21:35:23.000000000 +0100
++++ banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/RandomBy.cs	2016-07-10 12:57:20.666485296 +0200
+@@ -202,7 +202,7 @@
+             yield break;
+         }
+ 
+-        protected DatabaseTrackInfo GetTrack (HyenaSqliteCommand cmd, params object [] args)
++        protected virtual DatabaseTrackInfo GetTrack (HyenaSqliteCommand cmd, params object [] args)
+         {
+             using (var reader = ServiceManager.DbConnection.Query (cmd, args)) {
+                 if (reader.Read ()) {
+
+--- banshee-2.6.2/src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs	2014-02-18 21:35:24.000000000 +0100
++++ banshee-2.6.2/src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/HeaderWidget.cs	2016-07-10 14:21:55.310228455 +0200
+@@ -108,6 +108,16 @@
+             mode_combo.ActiveValue = mode_combo.Default;
+         }
+ 
++        public bool SetMode (Shuffler shuffler, String modeId) {
++            foreach (var random_by in shuffler.RandomModes.OrderBy (r => r.Adverb)) {
++                if (random_by.Id == modeId) {
++                    mode_combo.ActiveValue = random_by;
++                    return true;
++                }
++            }
++            return false;
++        }
++
+         private void OnModeComboChanged (object o, EventArgs args)
+         {
+             var random_by = mode_combo.ActiveValue;
+
+--- banshee-2.6.2/src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs	2014-02-18 21:40:14.000000000 +0100
++++ banshee-2.6.2/src/Extensions/Banshee.PlayQueue/Banshee.PlayQueue/PlayQueueSource.cs	2016-07-10 14:23:14.202228577 +0200
+@@ -215,6 +215,11 @@
+             }
+         }
+ 
++        public bool ChangeShuffleMode (String modeId)
++        {
++            return header_widget.SetMode (shuffler, modeId);
++        }
++
+ #region IPlayQueue, IDBusExportable
+ 
+         public void EnqueueUri (string uri)
+
+--- banshee-2.6.2/build/pkg-config/banshee-playqueue.pc.in	1970-01-01 01:00:00.000000000 +0100
++++ banshee-2.6.2/build/pkg-config/banshee-playqueue.pc.in	2016-07-10 14:14:28.614227762 +0200
+@@ -0,0 +1,10 @@
++prefix=@prefix@
++exec_prefix=${prefix}
++libdir=@libdir@
++bansheedir=${libdir}/@PACKAGE@
++
++Name: Banshee PlayQueue
++Description: PlayQueue extension for Banshee
++Version: @VERSION@
++Libs: -r:${bansheedir}/Extensions/Banshee.PlayQueue.dll
++
+
+--- banshee-2.6.2/po/de.po	2014-02-18 21:40:14.000000000 +0100
++++ banshee-2.6.2/po/de.po	2016-07-11 19:54:43.799909017 +0200
+@@ -23,7 +23,7 @@
+ "product=banshee&keywords=I18N+L10N&component=general\n"
+ "POT-Creation-Date: 2013-12-23 08:25+0000\n"
+ "PO-Revision-Date: 2014-01-01 00:24+0100\n"
+-"Last-Translator: Benjamin Steinwender <b@stbe.at>\n"
++"Last-Translator: Jeremiah J. Leonard\n"
+ "Language-Team: Deutsch <gnome-de@gnome.org>\n"
+ "Language: de\n"
+ "MIME-Version: 1.0\n"
+@@ -7383,3 +7383,36 @@
+ 
+ #~ msgid "Import play _counts"
+ #~ msgstr "Wieder_gabeanzahlwerte importieren"
++
++#: ../src/Extensions/Banshee.MusicCube/Banshee.MusicCube.addin.xml:7
++#: ../src/Extensions/Banshee.MusicCube/addin-xml-strings.cs:10
++msgid "Community Extensions"
++msgstr "Gemeinschaftserweiterungen"
++
++#: ../src/Extensions/Banshee.MusicCube/MusicCubeActions.cs:41
++msgid "Play by MusicCube"
++msgstr "Wiedergabe mit MusicCube"
++
++#: ../src/Extensions/Banshee.MusicCube/MusicCubeActions.cs:42
++msgid "Play similar songs"
++msgstr "Ähnliche Lieder wiedergeben"
++
++#: ../src/Extensions/Banshee.MusicCube/RandomByProximity.cs:42
++msgid "Shuffle by Proximity"
++msgstr "Zufallswiedergabe nach Nachbarschaft"
++
++#: ../src/Extensions/Banshee.MusicCube/RandomByProximity.cs:43
++msgid "by proximity"
++msgstr "nach Nachbarschaft"
++
++#: ../src/Extensions/Banshee.MusicCube/RandomByProximity.cs:44
++msgid "Play all songs close to selected song"
++msgstr "Wiedergabe nahe Auswahl"
++
++#: ../src/Extensions/Banshee.MusicCube/addin-xml-strings.cs:8
++msgid "MusicCube"
++msgstr "MusicCube"
++
++#: ../src/Extensions/Banshee.MusicCube/addin-xml-strings.cs:9
++msgid "Adds the selected song to the play queue and shuffles by proximity"
++msgstr "Auswahl in Warteschlange einfügen und Zufallswiedergabe nach Nachbarschaft"

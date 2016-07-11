@@ -11,16 +11,16 @@
     url="http://banshee-project.org/"
     defaultEnabled="false">
 
-  <Localizer type="Gettext" catalog="banshee-community-extensions" location="../../../share/locale"/>
+  <Localizer type="Gettext" catalog="banshee" location="../../../share/locale"/>
 
   <Dependencies>
     <Addin id="Banshee.Services" version="1.0"/>
     <Addin id="Banshee.ThickClient" version="1.0"/>
   </Dependencies>
-  
+
   <Extension path="/Banshee/ServiceManager/Service">
     <Service class="Banshee.MusicCube.MusicCubeService"/>
-  </Extension>-->
+  </Extension>
 
   <Extension path="/Banshee/PlaybackController/ShuffleModes">
     <ShuffleMode class="Banshee.MusicCube.RandomByProximity"/>

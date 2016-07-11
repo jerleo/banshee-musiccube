@@ -1,16 +1,10 @@
-ASSEMBLY = Banshee.MusicCube
-LINK =  $(BANSHEE_LIBS)
-#LINK += $(BANSHEE_PLAYQUEUE_LIBS)
-LINK += -r:/usr/local/lib/banshee/Extensions/Banshee.PlayQueue.dll
 
-SOURCES =  \
-	Banshee.MusicCube/Coordinates.cs \
-	Banshee.MusicCube/MusicCubeActions.cs \
-	Banshee.MusicCube/MusicCubeService.cs \
-	Banshee.MusicCube/RandomByProximity.cs
+EXTRA_DIST =  expansions.m4
 
-RESOURCES =  \
-	Banshee.MusicCube.addin.xml \
-	Resources/GlobalUI.xml
+#Warning: This is an automatically generated file, do not edit!
+if ENABLE_RELEASE
+ SUBDIRS =  . 
+endif
 
-include $(top_srcdir)/build/build.mk
+# Projektspezifische Make-Datei einfügen
+include Banshee.MusicCube.make
