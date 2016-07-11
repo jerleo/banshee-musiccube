@@ -46,6 +46,7 @@ PKG_CHECK_MODULES([BANSHEE_THICKCLIENT], [banshee-thickclient])
 PKG_CHECK_MODULES([BANSHEE_HYENA], [banshee-hyena])
 PKG_CHECK_MODULES([BANSHEE_HYENA_DATA_SQLITE], [banshee-hyena-data-sqlite])
 PKG_CHECK_MODULES([BANSHEE_HYENA_GUI], [banshee-hyena-gui])
+PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0])
 
 dnl package checks, per config
 
