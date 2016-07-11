@@ -6,7 +6,7 @@
     copyright="Copyright © 2015 Jeremiah J. Leonard. Licensed under the MIT X11 license."
     name="MusicCube"
     category="Community Extensions"
-    description="Adds the selected song to the play queue and shuffles by proximity "
+    description="Adds the selected song to the play queue and shuffles by proximity"
     author="Jeremiah Leonard"
     url="http://banshee-project.org/"
     defaultEnabled="false">

@@ -16,7 +16,8 @@ patch -p0 < ../musiccube.patch
 # Re-build Banshee and install
 debchange -n "Applied patches for Banshee MusicCube"
 debuild -b -uc -us
-sudo dpkg -i ../banshee_2.6.2-3.1_amd64.deb
+cd ..
+sudo dpkg -i banshee_2.6.2-3.1_amd64.deb
 
 # Install LLVM 3.7
 wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
@@ -38,3 +39,7 @@ sudo apt-get install python-matplotlib
 pip install --user enum34
 pip install --user numba
 
+# Compile and install
+./autogen.sh
+make
+sudo cp lib/Banshee.MusicCube.dll /usr/lib/banshee/Extensions/
