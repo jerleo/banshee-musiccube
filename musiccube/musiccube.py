@@ -42,6 +42,8 @@ class MusicCube:
 
     def __init__(self):
 
+        Progress("Total Time", 1).display()
+
         # get music path from Banshee
         self.banshee = Banshee()
         self.music_path = self.banshee.library_source()
