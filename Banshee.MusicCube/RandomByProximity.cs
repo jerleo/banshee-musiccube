@@ -46,8 +46,6 @@ namespace Banshee.MusicCube
 
         public static TrackInfo SeedTrack ()
         {
-            queue = MusicCubeService.PlayQueue;
-
             var actions = ServiceManager.Get<InterfaceActionService> ().TrackActions;
             foreach (TrackInfo track in actions.SelectedTracks) {
                 seed = Coordinates.Of (track as DatabaseTrackInfo);
@@ -58,6 +56,16 @@ namespace Banshee.MusicCube
 
         protected override void OnModelAndCacheUpdated ()
         {
+            int x = 0, y = 0, z = 0;
+
+            // Track was selected
+            if (seed != null)
+            {
+                x = seed.X;
+                y = seed.Y;
+                z = seed.Z;
+            }
+
             // Calculate distance within cube
             string distance = @", ABS(MusicCube.Axis1 - {0}) 
                                 + ABS(MusicCube.Axis2 - {1}) 
@@ -77,12 +85,19 @@ namespace Banshee.MusicCube
                                   ON CoreTracks.TrackID = CorePlayListEntries.TrackID
                                WHERE CorePlayListEntries.PlayListID = {0}";
 
+
             // Set query fragments
-            Select = String.Format (distance, seed.X, seed.Y, seed.Z);
+            Select = String.Format (distance, x, y, z);
             From = ", MusicCube";
             Condition = "MusicCube.TrackID = CoreTracks.TrackID";
-            Condition += String.Format (" AND CoreTracks.ArtistID NOT IN (" + artist + ")", queue.DbId);
-            Condition += String.Format (" AND CoreTracks.AlbumID NOT IN (" + album + ")", queue.DbId);
+
+            // Try to get play queue
+            queue = MusicCubeService.PlayQueue;
+            if (queue != null)
+            {
+                Condition += String.Format (" AND CoreTracks.ArtistID NOT IN (" + artist + ")", queue.DbId);
+                Condition += String.Format (" AND CoreTracks.AlbumID NOT IN (" + album + ")", queue.DbId);                
+            }
             OrderBy = "Distance";
         }
 

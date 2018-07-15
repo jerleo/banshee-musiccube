@@ -24,7 +24,10 @@
 import os
 import sqlite3
 import urllib
-import gconf
+
+import gi
+gi.require_version('GConf', '2.0')
+from gi.repository import GConf
 
 class Banshee:
 
@@ -54,7 +57,8 @@ class Banshee:
 
     def library_source(self):
 
-        client = gconf.client_get_default()
+#        client = gconf.client_get_default()
+        client = GConf.Client.get_default()
         source = client.get_string(self.GCONF_KEY)
         assert source, "GConf: %s not found" % self.GCONF_KEY
         return source

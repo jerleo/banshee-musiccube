@@ -5,7 +5,7 @@ MusicCube is an extension for the Banshee Media Player allowing you to play stat
 
 	python musiccube.py
 
-This creates a table called MusicCube in your Banshee database which stores the coordinates of each song in the MusicCube. The extension adds to the context menu the command "Play by MusicCube". Select it to clear the play queue and fill it with statistically similar songs.
+This creates a table called MusicCube in your Banshee database which stores the coordinates of each song in the MusicCube. The extension adds a command "Play by MusicCube" to the context menu. Select it to clear the play queue and fill it with statistically similar songs.
 
 ![Screenshot](MusicCube.png)
 
