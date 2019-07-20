@@ -37,7 +37,6 @@ sudo apt-get install python-pip
 sudo apt-get install python-matplotlib
 
 # Install numba
-pip install --user enum34
 pip install --user numba
 
 # Compile and install

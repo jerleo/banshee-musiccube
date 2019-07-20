@@ -48,7 +48,7 @@ namespace Banshee.MusicCube
             Register ();
         }
 
-		private void OnPlayByMusicCube (object o, EventArgs args)
+        private void OnPlayByMusicCube (object o, EventArgs args)
         {        
             // Try to get the play queue
             PlayQueueSource queue = MusicCubeService.PlayQueue;

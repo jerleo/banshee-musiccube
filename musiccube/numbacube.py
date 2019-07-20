@@ -74,14 +74,8 @@ class NumbaCube:
         rate_lower = 0.1
         rate_upper = 0.5
 
-        spread_lower = 0.01
-
-        if self.new:
-            # Large spread for fresh weights
-            spread_upper = self.edge_length / 3.0
-        else:
-            # Small spread for trained weights
-            spread_upper = spread_lower * 1.05
+        spread_lower = 1.0
+        spread_upper = self.edge_length / 3.0
 
         shuffled = range(samples)
         np.random.shuffle(shuffled)
